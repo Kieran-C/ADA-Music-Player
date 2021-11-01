@@ -64,4 +64,5 @@ public class Animation {
         fade.play();
         return true;
     }
+
 }

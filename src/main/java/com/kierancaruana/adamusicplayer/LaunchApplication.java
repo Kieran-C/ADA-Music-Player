@@ -14,19 +14,32 @@ import java.io.IOException;
 import static java.awt.Toolkit.getDefaultToolkit;
 
 public class LaunchApplication extends Application {
+
+    public static Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws IOException {
         Dimension screenSize = getDefaultToolkit().getScreenSize();
         FXMLLoader fxmlLoader = new FXMLLoader(LaunchApplication.class.getResource("launch-controller.fxml"));
-        Scene launchScn = new Scene(fxmlLoader.load(), 450, 844);
-        stage.setMaximized(true);
+        Scene launchScn = new Scene(fxmlLoader.load(), 1920, 1080);
+//        stage.setMaximized(true);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/musicLogo.png")));
         stage.setTitle("Flow");
         stage.setScene(launchScn);
+        stage.setResizable(false);
+        setPrimaryStage(stage);
         stage.show();
     }
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public Stage getPrimaryStage(){
+        return primaryStage;
+    }
+
+    public void setPrimaryStage(Stage stage){
+        this.primaryStage = stage;
     }
 }
