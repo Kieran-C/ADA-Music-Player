@@ -27,5 +27,5 @@
     </ImageView>
 
     <Label fx:id="welcomeText"/>
-    <Button text="Start listening" onAction="#onHelloButtonClick"/>
+    <Button fx:id="startButton" text="Start listening" onAction="#onHelloButtonClick"/>
 </VBox>
