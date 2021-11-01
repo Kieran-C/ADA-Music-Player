@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<VBox alignment="CENTER" spacing="20.0" fx:id="launchVbox" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.kierancaruana.adamusicplayer.LaunchController">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <ImageView
+            fx:id="musicLogo"
+            fitHeight="150.0"
+            fitWidth="200.0"
+            layoutX="61.0"
+            layoutY="83.0"
+            pickOnBounds="true"
+            preserveRatio="true"
+    >
+
+    </ImageView>
+
+    <Label fx:id="welcomeText"/>
+    <Button text="Start listening" onAction="#onHelloButtonClick"/>
+</VBox>
