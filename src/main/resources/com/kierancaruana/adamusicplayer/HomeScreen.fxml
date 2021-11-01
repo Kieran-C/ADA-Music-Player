@@ -43,7 +43,6 @@
         <ProgressBar fx:id="songProgress" prefWidth="1620"/>
         <Button fx:id="shuffleButton" text="Shuffle"/>
     </HBox>
-
 </VBox>
 
 

@@ -9,6 +9,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 
 public class HomeScreen extends StackPane {
@@ -30,6 +33,7 @@ public class HomeScreen extends StackPane {
         int winWidth = 1920;
         int winHeight = 1080;
         musicVbox.setPrefSize(winWidth,winHeight);
+        playlistsTitleBar.setFont(Font.font("Impact", FontWeight.BOLD, FontPosture.ITALIC, 30));
         playlistsTitleBar.setText("Playlists");
         playlistsTitleBar.setTextFill(Color.rgb(255,255,255));
 //        playlistVbox.setPrefSize(30,winHeight);
