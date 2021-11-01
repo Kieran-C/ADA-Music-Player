@@ -54,7 +54,7 @@ public class LaunchController {
         animation.fadeText(welcomeText, 1, 0, 600, 1);
         ScaleTransition scaleAnimation = animation.scaleImageOnce(musicLogo, 500, 500, 1000, 1);
         scaleAnimation.setOnFinished(actionEvent -> {
-            stageManager.swapScene("HomeScreen.fxml", "home-screen");
+            stageManager.swapScene("HomeScreen.fxml", "home-screen", null);
         });
 
     }

@@ -32,11 +32,12 @@ public class HomeScreen extends StackPane {
     public void initialize() {
         int winWidth = 1920;
         int winHeight = 1080;
+        musicVbox.setStyle("-fx-background-color: #28353b;");
         musicVbox.setPrefSize(winWidth,winHeight);
         playlistsTitleBar.setFont(Font.font("Impact", FontWeight.BOLD, FontPosture.ITALIC, 30));
         playlistsTitleBar.setText("Playlists");
         playlistsTitleBar.setTextFill(Color.rgb(255,255,255));
-//        playlistVbox.setPrefSize(30,winHeight);
+        trackTable.setStyle("-fx-background-color: #28353b; -fx-alternative-row-fill-visible: #3a4c53;");
         trackTable.setPrefWidth(((winWidth-20)/100)*90);
         BackgroundFill bf = new BackgroundFill(Color.rgb(46, 46, 46), CornerRadii.EMPTY, Insets.EMPTY);
         Background bg = new Background(bf);

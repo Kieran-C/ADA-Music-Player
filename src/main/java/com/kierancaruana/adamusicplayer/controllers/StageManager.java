@@ -14,12 +14,15 @@ public class StageManager extends LaunchApplication {
     String currentScene = null;
     Logger logger = Logger.getLogger(StageManager.class.getName());
 
-    public boolean swapScene(String FXMLFile, String stageName){
+    public boolean swapScene(String FXMLFile, String stageName, String styleSheetPath){
         if (primaryStage != null) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(LaunchApplication.class.getResource(FXMLFile));
 //                logger.log(Level.INFO, fxmlLoader.);
                 Scene scene = new Scene(fxmlLoader.load());
+                if (styleSheetPath != null){
+                    scene.getStylesheets().add(styleSheetPath);
+                }
                 setCurrentScene(stageName);
                 primaryStage.setScene(scene);
                 return true;
