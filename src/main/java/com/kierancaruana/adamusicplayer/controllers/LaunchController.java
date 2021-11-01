@@ -47,6 +47,6 @@ public class LaunchController {
     protected void onHelloButtonClick() {
         startButton.setVisible(false);
         animation.fadeText(welcomeText,1,0,600,1);
-        animation.scaleImageOnce(musicLogo, 500,500,850,1);
+        animation.scaleImageOnce(musicLogo, 500,500,1000,1);
     }
 }
