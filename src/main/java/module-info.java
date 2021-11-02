@@ -10,4 +10,5 @@ module com.kierancaruana.adamusicplayer {
     exports com.kierancaruana.adamusicplayer;
     exports com.kierancaruana.adamusicplayer.controllers;
     opens com.kierancaruana.adamusicplayer.controllers to javafx.fxml;
+    opens com.kierancaruana.adamusicplayer.objects to javafx.base;
 }
