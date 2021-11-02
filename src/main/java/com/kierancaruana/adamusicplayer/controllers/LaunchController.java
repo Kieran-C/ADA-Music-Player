@@ -1,6 +1,7 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
 import com.kierancaruana.adamusicplayer.helpers.animations.Animation;
+import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -32,7 +33,6 @@ public class LaunchController {
 
     Animation animation = new Animation();
     StageManager stageManager = new StageManager();
-
 
     @FXML
     public void initialize() {

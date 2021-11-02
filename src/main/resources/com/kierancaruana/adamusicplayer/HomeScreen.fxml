@@ -39,7 +39,7 @@
         </TableView>
     </HBox>
     <HBox fx:id="mediaControlsHbox" alignment="CENTER_RIGHT" prefWidth="1920" prefHeight="100">
-        <Button fx:id="playButton" text="Play"/>
+        <Button fx:id="playButton" text="Play" onAction="#onPlayButtonClick"/>
         <ProgressBar fx:id="songProgress" prefWidth="1620"/>
         <Button fx:id="shuffleButton" text="Shuffle"/>
     </HBox>

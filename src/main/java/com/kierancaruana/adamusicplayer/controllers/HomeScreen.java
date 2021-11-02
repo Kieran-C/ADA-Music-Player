@@ -1,6 +1,8 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
+import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import com.kierancaruana.adamusicplayer.objects.Song;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -27,6 +29,8 @@ public class HomeScreen extends StackPane {
     @FXML
     private Label playlistsTitleBar;
 
+    MusicControls musicControls = new MusicControls();
+
 
     @FXML
     public void initialize() {
@@ -42,5 +46,9 @@ public class HomeScreen extends StackPane {
         BackgroundFill bf = new BackgroundFill(Color.rgb(46, 46, 46), CornerRadii.EMPTY, Insets.EMPTY);
         Background bg = new Background(bf);
         musicVbox.setBackground(bg);
+    }
+
+    public void onPlayButtonClick() {
+        musicControls.playMp3("/music/Noisestorm-CrabRave.mp3");
     }
 }
