@@ -71,16 +71,11 @@ public class HomeScreen extends StackPane {
         List<Song> loadedSongs;
         loadedSongs = csv.readSongsFromFile();
         loadedSongs.forEach((n) -> {
+            logger.log(Level.INFO,"---------Added: " + n.getTrackName() + " -------------");
             songList.add(n);
         });
-//        Song song = new Song();
-//        song.setTrackId(1);
-//        song.setTrackName("TestSong");
-//        song.setTrackFileLocation("/music/Noisestorm-CrabRave.mp3");
-//        songList.add(song);
         trackTable.setItems(songList);
         logger.log(Level.INFO, "Test song object created");
-
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();

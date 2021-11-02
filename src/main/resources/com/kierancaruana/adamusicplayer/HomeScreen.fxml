@@ -35,10 +35,14 @@
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="trackArtistColumn" text="Artist" prefWidth="200">
-
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trackArtist"/>
+                    </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="trackAlbumColumn" text="Album" prefWidth="200">
-
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trackAlbum"/>
+                    </cellValueFactory>
                 </TableColumn>
             </columns>
         </TableView>

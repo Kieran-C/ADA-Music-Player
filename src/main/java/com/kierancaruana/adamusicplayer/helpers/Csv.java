@@ -1,15 +1,9 @@
 package com.kierancaruana.adamusicplayer.helpers;
 
-import com.kierancaruana.adamusicplayer.LaunchApplication;
-import com.kierancaruana.adamusicplayer.controllers.StageManager;
 import com.kierancaruana.adamusicplayer.objects.Song;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,7 +25,7 @@ public class Csv {
                 String data = scanner.next();
                 if (counter < 4){
                     logger.log(Level.INFO,"Counter: " + counter);
-                    songTemp.add(data);
+                    songTemp.add(data.trim());
                     logger.log(Level.INFO, "Added " + data + " to temp list");
                     counter++;
                     if (songTemp.size() == 4){
@@ -40,10 +34,13 @@ public class Csv {
                         newSong.setTrackId(loops+1);
                         newSong.setTrackName(songTemp.get(0));
                         newSong.setTrackFileLocation(songTemp.get(1));
+                        newSong.setTrackArtist(songTemp.get(2));
+                        newSong.setTrackAlbum(songTemp.get(3));
                         loadedSongList.add(newSong);
                         logger.log(Level.INFO,"New song track ID: " + newSong.getTrackId());
                         counter = 0;
                         loops++;
+                        songTemp.clear();
                     }
                 }
             }
