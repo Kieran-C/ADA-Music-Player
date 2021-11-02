@@ -1,28 +1,29 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
+import com.kierancaruana.adamusicplayer.helpers.Csv;
 import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class HomeScreen extends StackPane {
 
+    public Button shuffleButton;
     @FXML
     private VBox musicVbox;
     @FXML
@@ -37,6 +38,7 @@ public class HomeScreen extends StackPane {
     private ProgressBar songProgress;
 
     MusicControls musicControls = new MusicControls();
+    Csv csv = new Csv();
 
     ObservableList<Song> songList = FXCollections.observableArrayList();
 
@@ -66,11 +68,16 @@ public class HomeScreen extends StackPane {
 
         logger.log(Level.INFO, "Listener Created");
 
-        Song song = new Song();
-        song.setTrackId(1);
-        song.setTrackName("TestSong");
-        song.setTrackFileLocation("/music/Noisestorm-CrabRave.mp3");
-        songList.add(song);
+        List<Song> loadedSongs;
+        loadedSongs = csv.readSongsFromFile();
+        loadedSongs.forEach((n) -> {
+            songList.add(n);
+        });
+//        Song song = new Song();
+//        song.setTrackId(1);
+//        song.setTrackName("TestSong");
+//        song.setTrackFileLocation("/music/Noisestorm-CrabRave.mp3");
+//        songList.add(song);
         trackTable.setItems(songList);
         logger.log(Level.INFO, "Test song object created");
 
@@ -93,5 +100,9 @@ public class HomeScreen extends StackPane {
 
     public void onPlayButtonClick() {
         musicControls.playMp3("/music/Noisestorm-CrabRave.mp3");
+    }
+
+    public void onShuffleButtonClick() {
+//        csv.readSongsFromFile();
     }
 }
