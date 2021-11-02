@@ -35,10 +35,14 @@
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="trackArtistColumn" text="Artist" prefWidth="200">
-
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trackArtist"/>
+                    </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="trackAlbumColumn" text="Album" prefWidth="200">
-
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trackAlbum"/>
+                    </cellValueFactory>
                 </TableColumn>
             </columns>
         </TableView>
@@ -46,7 +50,7 @@
     <HBox fx:id="mediaControlsHbox" alignment="CENTER_RIGHT" prefWidth="1920" prefHeight="100">
         <Button fx:id="playButton" text="Play" onAction="#onPlayButtonClick"/>
         <ProgressBar fx:id="songProgress" prefWidth="1620"/>
-        <Button fx:id="shuffleButton" text="Shuffle"/>
+        <Button fx:id="shuffleButton" text="Shuffle" onAction="#onShuffleButtonClick"/>
     </HBox>
 </VBox>
 

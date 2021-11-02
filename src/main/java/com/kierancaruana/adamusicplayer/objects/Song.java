@@ -17,11 +17,15 @@ public class Song {
         public void setTrackName(final String trackName){this.trackName.set(trackName);}
         public StringProperty trackNameProperty() {return trackName;}
 
+        public String getTrackArtist(){return this.trackArtist.get();}
+        public void setTrackArtist(final String trackArtist){this.trackArtist.set(trackArtist);}
+        public StringProperty trackArtistProperty() {return trackArtist;}
 
-        public String getTrackFileLocation() {
-                return trackFileLocation;
-        }
+        public String getTrackAlbum(){return this.trackAlbum.get();}
+        public void setTrackAlbum(final String trackAlbum){this.trackAlbum.set(trackAlbum);}
+        public StringProperty trackAlbumProperty() {return trackAlbum;}
 
+        public String getTrackFileLocation() {return trackFileLocation;}
         public void setTrackFileLocation(String trackFileLocation) {
                 this.trackFileLocation = trackFileLocation;
         }
