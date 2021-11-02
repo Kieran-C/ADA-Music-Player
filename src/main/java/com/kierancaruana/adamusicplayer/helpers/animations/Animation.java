@@ -39,7 +39,7 @@ public class Animation {
      * @param repeats number of times animation repeats, -1 for indefinite
      * @return returns true if successful
      */
-    public boolean scaleImageOnce(ImageView subjectImage, double x, double y, int duration, int repeats){
+    public ScaleTransition scaleImageOnce(ImageView subjectImage, double x, double y, int duration, int repeats){
         ScaleTransition scale = new ScaleTransition();
         scale.setNode(subjectImage);
         scale.setDuration(Duration.millis(duration));
@@ -49,7 +49,7 @@ public class Animation {
         scale.setByY(y);
         scale.setAutoReverse(true);
         scale.play();
-        return true;
+        return scale;
     }
 
 
@@ -64,4 +64,5 @@ public class Animation {
         fade.play();
         return true;
     }
+
 }

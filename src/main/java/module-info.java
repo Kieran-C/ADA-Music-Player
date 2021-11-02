@@ -1,7 +1,9 @@
 module com.kierancaruana.adamusicplayer {
     requires javafx.controls;
+    requires javafx.media;
     requires javafx.fxml;
     requires java.desktop;
+    requires java.logging;
 
 
     opens com.kierancaruana.adamusicplayer to javafx.fxml;

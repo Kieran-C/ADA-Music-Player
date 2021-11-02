@@ -1,8 +1,9 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
 import com.kierancaruana.adamusicplayer.helpers.animations.Animation;
+import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+
 public class LaunchController {
     @FXML
     private Label welcomeText;
@@ -28,6 +32,7 @@ public class LaunchController {
     private Button startButton;
 
     Animation animation = new Animation();
+    StageManager stageManager = new StageManager();
 
     @FXML
     public void initialize() {
@@ -46,7 +51,11 @@ public class LaunchController {
     @FXML
     protected void onHelloButtonClick() {
         startButton.setVisible(false);
-        animation.fadeText(welcomeText,1,0,600,1);
-        animation.scaleImageOnce(musicLogo, 500,500,1000,1);
+        animation.fadeText(welcomeText, 1, 0, 600, 1);
+        ScaleTransition scaleAnimation = animation.scaleImageOnce(musicLogo, 500, 500, 1000, 1);
+        scaleAnimation.setOnFinished(actionEvent -> {
+            stageManager.swapScene("HomeScreen.fxml", "home-screen", null);
+        });
+
     }
 }

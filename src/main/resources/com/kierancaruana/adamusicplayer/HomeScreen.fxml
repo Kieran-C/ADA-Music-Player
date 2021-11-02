@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<VBox alignment="CENTER" fx:id="musicVbox" xmlns:fx="http://javafx.com/fxml" fx:controller="com.kierancaruana.adamusicplayer.controllers.HomeScreen">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0"/>
+    </padding>
+    <HBox fx:id="masterHBox" alignment="TOP_RIGHT" prefHeight="1080">
+        <VBox alignment="CENTER" fx:id="playlistVBox" prefHeight="1000">
+            <VBox alignment="TOP_CENTER" fx:id="playlistTitleVBox">
+                <Label fx:id="playlistsTitleBar" textAlignment="CENTER" alignment="TOP_CENTER"/>
+            </VBox>
+            <Button text="Playlist 1" alignment="TOP_CENTER"/>
+        </VBox>
+
+        <TableView fx:id="trackTable" prefHeight="1000">
+            <columns>
+                <TableColumn fx:id="trackIdColumn" text="ID" prefWidth="30">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trackIdProperty"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="trackNameColumn" text="Title" prefWidth="200">
+                    <cellValueFactory>
+                        <!--                        <PropertyValueFactory property="trackNameProperty"/>-->
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="trackArtistColumn" text="Artist" prefWidth="200">
+
+                </TableColumn>
+                <TableColumn fx:id="trackAlbumColumn" text="Album" prefWidth="200">
+
+                </TableColumn>
+            </columns>
+        </TableView>
+    </HBox>
+    <HBox fx:id="mediaControlsHbox" alignment="CENTER_RIGHT" prefWidth="1920" prefHeight="100">
+        <Button fx:id="playButton" text="Play" onAction="#onPlayButtonClick"/>
+        <ProgressBar fx:id="songProgress" prefWidth="1620"/>
+        <Button fx:id="shuffleButton" text="Shuffle"/>
+    </HBox>
+</VBox>
+
+
