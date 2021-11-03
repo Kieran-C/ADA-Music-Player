@@ -6,16 +6,22 @@ import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,6 +50,8 @@ public class HomeScreen extends StackPane {
     ObservableList<Song> songList = FXCollections.observableArrayList();
 
     Logger logger = Logger.getLogger(StageManager.class.getName());
+
+    Song nowPlaying;
 
     @FXML
     public void initialize() {
@@ -75,13 +83,29 @@ public class HomeScreen extends StackPane {
         });
         trackTable.setItems(songList);
 
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem playSongOption = new MenuItem("Play");
+        MenuItem addSongToPlaylist = new MenuItem("Add to Playlist");
+        contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
+
+        playSongOption.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                musicControls.playMp3(nowPlaying.getTrackFileLocation());
+            }
+        });
+
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(mouseEvent -> {
+                nowPlaying = trackTable.getSelectionModel().getSelectedItem();
                 if ((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)){
                     logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
+                }
+                if (mouseEvent.getButton() == MouseButton.SECONDARY){
+                    tableRow.setContextMenu(contextMenu);
                 }
             });
             return tableRow;
@@ -91,11 +115,13 @@ public class HomeScreen extends StackPane {
         thread.start();
     }
 
+
+
     public void onPlayButtonClick() {
         musicControls.playMp3("/music/Noisestorm-CrabRave.mp3");
     }
 
     public void onShuffleButtonClick() {
-//        csv.readSongsFromFile();
+//        songList.
     }
 }
