@@ -43,6 +43,8 @@ public class HomeScreen extends StackPane {
     private Label playlistsTitleBar;
     @FXML
     private ProgressBar songProgress;
+    @FXML
+    private Button playButton;
 
     MusicControls musicControls = new MusicControls();
     Csv csv = new Csv();
@@ -92,6 +94,7 @@ public class HomeScreen extends StackPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 musicControls.playMp3(nowPlaying.getTrackFileLocation());
+                playButton.setText("Pause");
             }
         });
 
@@ -103,6 +106,7 @@ public class HomeScreen extends StackPane {
                     logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
+                    playButton.setText("Pause");
                 }
                 if (mouseEvent.getButton() == MouseButton.SECONDARY){
                     tableRow.setContextMenu(contextMenu);
@@ -118,7 +122,20 @@ public class HomeScreen extends StackPane {
 
 
     public void onPlayButtonClick() {
-        musicControls.playMp3("/music/Noisestorm-CrabRave.mp3");
+        System.out.println("Button clicked: " + playButton.getText());
+        if ((playButton.getText()).equals("Play")){
+            System.out.println("Entered first if");
+            if (nowPlaying == null){
+                musicControls.playMp3(songList.get(0).getTrackFileLocation());
+                nowPlaying = songList.get(0);
+            }else{
+                musicControls.unpauseMp3();
+            }
+            playButton.setText("Pause");
+        }else{
+            musicControls.pauseMp3();
+            playButton.setText("Play");
+        }
     }
 
     public void onShuffleButtonClick() {

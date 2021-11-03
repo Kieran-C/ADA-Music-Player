@@ -28,4 +28,18 @@ public class MusicControls {
             e.printStackTrace();
         }
     }
+
+    public void pauseMp3(){
+        if (player != null){
+            player.pause();
+            System.out.println("Pause at: " + player.getCurrentTime());
+        }
+    }
+
+    public void unpauseMp3(){
+        if (player != null){
+            player.play();
+            System.out.println("Pause at: " + player.getCurrentTime());
+        }
+    }
 }
