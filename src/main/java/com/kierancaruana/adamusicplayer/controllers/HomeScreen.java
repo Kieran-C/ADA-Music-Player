@@ -78,7 +78,7 @@ public class HomeScreen extends StackPane {
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(mouseEvent -> {
-                if (mouseEvent.getButton() == MouseButton.PRIMARY){
+                if ((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)){
                     logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
