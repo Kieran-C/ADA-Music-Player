@@ -1,6 +1,7 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
 import com.kierancaruana.adamusicplayer.helpers.Csv;
+import com.kierancaruana.adamusicplayer.helpers.Idle;
 import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
@@ -66,8 +67,6 @@ public class HomeScreen extends StackPane {
 
         });
 
-        logger.log(Level.INFO, "Listener Created");
-
         List<Song> loadedSongs;
         loadedSongs = csv.readSongsFromFile();
         loadedSongs.forEach((n) -> {
@@ -75,7 +74,6 @@ public class HomeScreen extends StackPane {
             songList.add(n);
         });
         trackTable.setItems(songList);
-        logger.log(Level.INFO, "Test song object created");
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
@@ -89,8 +87,8 @@ public class HomeScreen extends StackPane {
             return tableRow;
         });
 
-        logger.log(Level.INFO, "Mouse event created");
-
+        Idle thread = new Idle();
+        thread.start();
     }
 
     public void onPlayButtonClick() {

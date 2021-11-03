@@ -1,11 +1,13 @@
 package com.kierancaruana.adamusicplayer;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.awt.*;
 
@@ -27,6 +29,12 @@ public class LaunchApplication extends Application {
         stage.setTitle("Flow");
         stage.setScene(launchScn);
         stage.setResizable(false);
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
         setPrimaryStage(stage);
         stage.show();
     }
