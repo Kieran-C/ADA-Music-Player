@@ -20,6 +20,9 @@
             <VBox prefHeight="1000">
                 <Button text="Playlist 1" alignment="TOP_CENTER"/>
             </VBox>
+            <VBox>
+                <Button text="New Playlist" alignment="CENTER" onAction="#onNewPlaylistButtonClick"/>
+            </VBox>
         </VBox>
 
         <TableView fx:id="trackTable" prefHeight="1000">

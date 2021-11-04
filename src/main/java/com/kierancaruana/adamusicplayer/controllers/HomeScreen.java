@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.kierancaruana.adamusicplayer.LaunchApplication.primaryStage;
 
 
 public class HomeScreen extends StackPane {
@@ -51,6 +57,7 @@ public class HomeScreen extends StackPane {
     Csv csv = new Csv();
 
     ObservableList<Song> songList = FXCollections.observableArrayList();
+    ObservableList<String> playlists = FXCollections.observableArrayList();
 
     Logger logger = Logger.getLogger(StageManager.class.getName());
 
@@ -172,5 +179,24 @@ public class HomeScreen extends StackPane {
 
     public Song getSongObject(int songId){
         return songList.get(songId);
+    }
+
+    public void onNewPlaylistButtonClick() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        Button getNameBtn = new Button("Create");
+        Text titlePopupText = new Text();
+        titlePopupText.setText("Create New Playlist");
+        TextField nameField = new TextField();
+        getNameBtn.setOnAction(actionEvent -> {
+            playlists.add(nameField.getText());
+            logger.log(Level.INFO, "Playlist created: " + playlists.get((playlists.size())-1));
+        });
+        nameField.setText("Playlist Name");
+        VBox dialogVbox = new VBox(titlePopupText, nameField, getNameBtn);
+        Scene dialogScene = new Scene(dialogVbox, 200, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 }
