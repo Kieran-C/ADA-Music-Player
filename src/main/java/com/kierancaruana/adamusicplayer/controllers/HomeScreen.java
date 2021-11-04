@@ -65,6 +65,7 @@ public class HomeScreen extends StackPane {
 
     @FXML
     public void initialize() {
+        playlists.add("My Favourites");
         int winWidth = 1920;
         int winHeight = 1080;
         musicVbox.setStyle("-fx-background-color: #28353b;");
@@ -93,19 +94,6 @@ public class HomeScreen extends StackPane {
         });
         trackTable.setItems(songList);
 
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem playSongOption = new MenuItem("Play");
-        MenuItem addSongToPlaylist = new MenuItem("Add to Playlist");
-        contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
-
-        playSongOption.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                musicControls.playMp3(nowPlaying.getTrackFileLocation());
-                playButton.setText("Pause");
-            }
-        });
-
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(mouseEvent -> {
@@ -116,6 +104,22 @@ public class HomeScreen extends StackPane {
                     playButton.setText("Pause");
                 }
                 if (mouseEvent.getButton() == MouseButton.SECONDARY){
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem playSongOption = new MenuItem("Play");
+                    Menu addSongToPlaylist = new Menu("Add to Playlist");
+                    playlists.forEach(name -> {
+                        MenuItem playlistOption = new MenuItem(name);
+                        addSongToPlaylist.getItems().add(playlistOption);
+                    });
+                    contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
+
+                    playSongOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            musicControls.playMp3(nowPlaying.getTrackFileLocation());
+                            playButton.setText("Pause");
+                        }
+                    });
                     tableRow.setContextMenu(contextMenu);
                 }
             });
