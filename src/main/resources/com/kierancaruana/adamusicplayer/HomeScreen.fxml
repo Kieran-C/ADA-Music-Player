@@ -24,7 +24,7 @@
             </VBox>
         </VBox>
         <VBox>
-            <TextField text="Search" fx:id="searchBox"></TextField>
+            <TextField promptText="Search song title" fx:id="searchBox"></TextField>
             <TableView fx:id="trackTable" prefHeight="1000">
                 <columns>
                     <TableColumn fx:id="trackIdColumn" text="ID" prefWidth="30">
