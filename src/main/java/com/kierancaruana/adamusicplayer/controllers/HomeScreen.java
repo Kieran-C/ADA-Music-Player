@@ -7,7 +7,6 @@ import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -66,6 +65,9 @@ public class HomeScreen extends StackPane {
     Song nowPlaying;
     String currentPlaylist;
 
+    /**
+     * Initializes the HomeScreen and sets up all the button event handlers
+     */
     @FXML
     public void initialize() {
         playlists.add("All Songs");
@@ -233,7 +235,7 @@ public class HomeScreen extends StackPane {
                 musicControls.playMp3(currentSongList.get(0).getTrackFileLocation());
                 nowPlaying = currentSongList.get(0);
             }else{
-                musicControls.unpauseMp3();
+                musicControls.unPauseMp3();
             }
             playButton.setText("Pause");
         }else{

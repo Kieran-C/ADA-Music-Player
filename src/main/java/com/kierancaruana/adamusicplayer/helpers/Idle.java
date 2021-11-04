@@ -5,6 +5,9 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 
 public class Idle extends Thread{
+    /**
+     * Thread that checks if user is idle
+     */
     public void run() {
         boolean active = true;
         int[] lastSavedMouseCoords = {900000,900000};
@@ -29,8 +32,4 @@ public class Idle extends Thread{
             System.out.println("Active Status: " +active);
         }
     }
-//    public int[] handle(MouseEvent me){
-//        int[] meCoords = {me.getX(),me.getY()};
-//        return meCoords;
-//    }
 }

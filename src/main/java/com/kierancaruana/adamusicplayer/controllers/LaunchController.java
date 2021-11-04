@@ -34,6 +34,9 @@ public class LaunchController {
     Animation animation = new Animation();
     StageManager stageManager = new StageManager();
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     */
     @FXML
     public void initialize() {
         BackgroundFill bf = new BackgroundFill(Color.rgb(46,46,46), CornerRadii.EMPTY, Insets.EMPTY);
@@ -48,6 +51,9 @@ public class LaunchController {
         welcomeText.setText("Welcome To Flow");
     }
 
+    /**
+     * Starts the music menu screen
+     */
     @FXML
     protected void onHelloButtonClick() {
         startButton.setVisible(false);

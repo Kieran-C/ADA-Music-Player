@@ -1,10 +1,8 @@
 package com.kierancaruana.adamusicplayer.helpers.music;
 
 
-import com.kierancaruana.adamusicplayer.controllers.StageManager;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -17,6 +15,10 @@ public class MusicControls {
 
     Logger logger = Logger.getLogger(MusicControls.class.getName());
 
+    /**
+     * Plays the mp3 file at the given path
+     * @param filePath filepath of MP3 to play
+     */
     public void playMp3(String filePath){
         try{
             if (player != null){
@@ -32,22 +34,27 @@ public class MusicControls {
         }
     }
 
+    /**
+     * Pauses the mp3 file
+     */
     public void pauseMp3(){
         if (player != null){
             player.pause();
         }
     }
 
-    public void unpauseMp3(){
+    /**
+     * un-pauses the mp3 file
+     */
+    public void unPauseMp3(){
         if (player != null){
             player.play();
         }
     }
 
-    public void playMp3Queue(List<Integer> songOrder){
-
-    }
-
+    /**
+     * gets the length of the mp3 file
+     */
     public double getTrackLength(String filePath){
         double duration = player.getTotalDuration().toMillis();
         return duration;

@@ -52,7 +52,15 @@ public class Animation {
         return scale;
     }
 
-
+    /**
+     * Method to fade a Label smoothly
+     * @param subjectText Label to fade
+     * @param fadeFromValue opacity value to fade from
+     * @param fadeToValue opacity value to fade to
+     * @param duration duration of animation
+     * @param repeats number of times animation repeats, -1 for indefinite
+     * @return returns true if successful
+     */
     public boolean fadeText(Label subjectText, int fadeFromValue, int fadeToValue, int duration, int repeats){
         FadeTransition fade = new FadeTransition();
         fade.setNode(subjectText);

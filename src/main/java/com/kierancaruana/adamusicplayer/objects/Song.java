@@ -41,6 +41,11 @@ public class Song {
                 this.incInPlaylist.add(playlistName);
         }
 
+        /**
+         * checks if the song is in the playlist
+         * @param playlistName playlist name
+         * @return true if the song is in the playlist, false otherwise
+         */
         public boolean isSongInPlaylist(String playlistName){
                 if (this.incInPlaylist.contains(playlistName)){
                         return true;
