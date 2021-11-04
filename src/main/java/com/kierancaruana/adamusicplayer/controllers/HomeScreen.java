@@ -109,6 +109,17 @@ public class HomeScreen extends StackPane {
                     Menu addSongToPlaylist = new Menu("Add to Playlist");
                     playlists.forEach(name -> {
                         MenuItem playlistOption = new MenuItem(name);
+                        playlistOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                if (!(nowPlaying.isSongInPlaylist(name))){
+                                    nowPlaying.addSongToPlaylist(name);
+                                    System.out.println(nowPlaying.getIncInPlaylist());
+                                }else{
+                                    logger.log(Level.INFO, "Song already in playlist - " + name);
+                                }
+                            }
+                        });
                         addSongToPlaylist.getItems().add(playlistOption);
                     });
                     contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
