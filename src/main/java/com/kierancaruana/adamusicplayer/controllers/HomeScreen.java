@@ -172,6 +172,9 @@ public class HomeScreen extends StackPane {
         return songsFiltered;
     }
 
+    /**
+     *  load
+     */
     public void loadPlaylistList(){
         playlistButtonList.getChildren().clear();
         if (playlists != null){
@@ -196,6 +199,11 @@ public class HomeScreen extends StackPane {
         }
     }
 
+    /**
+     * loads the correct songs into current song list to be displayed in the music table
+     * @param masterSongList List containing all the songs
+     * @return List of songs with the correct songs needing to be displayed in the song table
+     */
     public List<Song> loadTrackTable(ObservableList<Song> masterSongList){
         if (currentPlaylist == null){
             System.out.println("Current plist null");
@@ -215,6 +223,9 @@ public class HomeScreen extends StackPane {
         }
     }
 
+    /**
+     * pauses and unpauses song. If no song is playing then it starts playing the first song in the list
+     */
     public void onPlayButtonClick() {
         if ((playButton.getText()).equals("Play")){
             System.out.println("Now Playing: " + nowPlaying);
@@ -231,6 +242,9 @@ public class HomeScreen extends StackPane {
         }
     }
 
+    /**
+     * Generates a random order for the songs in current playlist then queues them and plays them one after another
+     */
     public void onShuffleButtonClick() {
         playButton.setText("Pause");
         new Thread(() -> {
@@ -276,10 +290,18 @@ public class HomeScreen extends StackPane {
         }).start();
     }
 
+    /**
+     * returns song with provided songId
+     * @param songId
+     * @return Song object of song with ID requested
+     */
     public Song getSongObject(int songId){
         return masterSongList.get(songId);
     }
 
+    /**
+     * Opens new window to create playlist and adds it to playlist list
+     */
     public void onNewPlaylistButtonClick() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

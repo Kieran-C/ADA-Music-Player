@@ -14,6 +14,11 @@ import java.util.logging.Logger;
 
 public class Csv {
     Logger logger = Logger.getLogger(Csv.class.getName());
+
+    /**
+     * Reads songs in from the csv file and saves them to the songs playlist as song objects
+     * @return List of Songs containing all songs from csv file
+     */
     public List<Song> readSongsFromFile(){
         List<Song> loadedSongList = new ArrayList<Song>();
         ClassLoader classLoader = getClass().getClassLoader();
