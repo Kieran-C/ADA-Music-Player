@@ -111,7 +111,6 @@ public class HomeScreen extends StackPane {
             tableRow.setOnMouseClicked(mouseEvent -> {
                 nowPlaying = trackTable.getSelectionModel().getSelectedItem();
                 if ((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)){
-                    logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
                     playButton.setText("Pause");
@@ -130,9 +129,7 @@ public class HomeScreen extends StackPane {
 
 
     public void onPlayButtonClick() {
-        System.out.println("Button clicked: " + playButton.getText());
         if ((playButton.getText()).equals("Play")){
-            System.out.println("Entered first if");
             if (nowPlaying == null){
                 musicControls.playMp3(songList.get(0).getTrackFileLocation());
                 nowPlaying = songList.get(0);
@@ -154,17 +151,12 @@ public class HomeScreen extends StackPane {
             while (counter < numOfSongs){
                 int songNum = (int) Math.round(Math.random()*(numOfSongs));
                 if (!(songOrder.contains(songNum))){
-                    System.out.println("Song added: " + songNum);
                     songOrder.add(songNum);
                     counter++;
                 }
             }
-            System.out.println("Song Order Length: " + songOrder.size());
-            System.out.println("Song Order:");
-
             counter = 0;
             while (counter < songOrder.size()){
-                System.out.println("In player loop counter: " + counter);
                 musicControls.playMp3((getSongObject(songOrder.get(counter))).getTrackFileLocation());
                 try {
 //                    Thread.sleep(10000);
