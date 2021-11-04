@@ -192,6 +192,7 @@ public class HomeScreen extends StackPane {
         getNameBtn.setOnAction(actionEvent -> {
             playlists.add(nameField.getText());
             logger.log(Level.INFO, "Playlist created: " + playlists.get((playlists.size())-1));
+            dialog.hide();
         });
         nameField.setText("Playlist Name");
         VBox dialogVbox = new VBox(titlePopupText, nameField, getNameBtn);
