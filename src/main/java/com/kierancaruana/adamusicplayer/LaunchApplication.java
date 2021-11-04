@@ -12,6 +12,7 @@ import javafx.stage.WindowEvent;
 import java.awt.*;
 
 import java.io.IOException;
+import java.util.Set;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 
