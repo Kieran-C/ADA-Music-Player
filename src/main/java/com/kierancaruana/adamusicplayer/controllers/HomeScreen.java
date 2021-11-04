@@ -23,6 +23,7 @@ import javafx.scene.text.FontWeight;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -139,6 +140,37 @@ public class HomeScreen extends StackPane {
     }
 
     public void onShuffleButtonClick() {
-//        songList.
+        new Thread(() -> {
+            int numOfSongs = songList.size();
+            int counter = 0;
+            List<Integer> songOrder = new ArrayList<Integer>();
+            while (counter < numOfSongs){
+                int songNum = (int) Math.round(Math.random()*(numOfSongs));
+                if (!(songOrder.contains(songNum))){
+                    System.out.println("Song added: " + songNum);
+                    songOrder.add(songNum);
+                    counter++;
+                }
+            }
+            System.out.println("Song Order Length: " + songOrder.size());
+            System.out.println("Song Order:");
+
+            counter = 0;
+            while (counter < songOrder.size()){
+                System.out.println("In player loop counter: " + counter);
+                musicControls.playMp3((getSongObject(songOrder.get(counter))).getTrackFileLocation());
+                try {
+//                    Thread.sleep(10000);
+                    Thread.sleep((long) musicControls.getTrackLength());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                counter++;
+            }
+        }).start();
+    }
+
+    public Song getSongObject(int songId){
+        return songList.get(songId);
     }
 }

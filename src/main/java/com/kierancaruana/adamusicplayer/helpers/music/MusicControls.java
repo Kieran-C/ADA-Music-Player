@@ -6,6 +6,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,14 +33,20 @@ public class MusicControls {
     public void pauseMp3(){
         if (player != null){
             player.pause();
-            System.out.println("Pause at: " + player.getCurrentTime());
         }
     }
 
     public void unpauseMp3(){
         if (player != null){
             player.play();
-            System.out.println("Pause at: " + player.getCurrentTime());
         }
+    }
+
+    public void playMp3Queue(List<Integer> songOrder){
+
+    }
+
+    public double getTrackLength(){
+        return player.getTotalDuration().toMillis();
     }
 }
