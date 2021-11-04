@@ -13,10 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -25,9 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +47,8 @@ public class HomeScreen extends StackPane {
     private ProgressBar songProgress;
     @FXML
     private Button playButton;
+    @FXML
+    VBox playlistButtonList;
 
     MusicControls musicControls = new MusicControls();
     Csv csv = new Csv();
@@ -62,6 +59,7 @@ public class HomeScreen extends StackPane {
     Logger logger = Logger.getLogger(StageManager.class.getName());
 
     Song nowPlaying;
+    String currentPlaylist;
 
     @FXML
     public void initialize() {
@@ -139,9 +137,26 @@ public class HomeScreen extends StackPane {
 
         Idle thread = new Idle();
         thread.start();
+
+        loadPlaylistList();
     }
 
-
+    public void loadPlaylistList(){
+        playlistButtonList.getChildren().clear();
+        if (playlists != null){
+            playlists.forEach(list -> {
+                Button b1 = new Button(list);
+                b1.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        currentPlaylist = list;
+                        System.out.println("Current playlist set to: " + currentPlaylist);
+                    }
+                });
+                playlistButtonList.getChildren().add(b1);
+            });
+        }
+    }
 
     public void onPlayButtonClick() {
         if ((playButton.getText()).equals("Play")){
@@ -200,6 +215,7 @@ public class HomeScreen extends StackPane {
             playlists.add(nameField.getText());
             logger.log(Level.INFO, "Playlist created: " + playlists.get((playlists.size())-1));
             dialog.hide();
+            loadPlaylistList();
         });
         nameField.setText("Playlist Name");
         VBox dialogVbox = new VBox(titlePopupText, nameField, getNameBtn);

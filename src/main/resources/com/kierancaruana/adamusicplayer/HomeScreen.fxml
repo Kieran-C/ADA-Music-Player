@@ -17,38 +17,39 @@
             <VBox alignment="TOP_LEFT" fx:id="playlistTitleVBox">
                 <Label fx:id="playlistsTitleBar" textAlignment="CENTER" alignment="TOP_CENTER"/>
             </VBox>
-            <VBox prefHeight="1000">
-                <Button text="Playlist 1" alignment="TOP_CENTER"/>
+            <VBox prefHeight="1000" fx:id="playlistButtonList">
             </VBox>
             <VBox>
                 <Button text="New Playlist" alignment="CENTER" onAction="#onNewPlaylistButtonClick"/>
             </VBox>
         </VBox>
-
-        <TableView fx:id="trackTable" prefHeight="1000">
-            <columns>
-                <TableColumn fx:id="trackIdColumn" text="ID" prefWidth="30">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="trackId"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="trackNameColumn" text="Title" prefWidth="200">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="trackName"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="trackArtistColumn" text="Artist" prefWidth="200">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="trackArtist"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="trackAlbumColumn" text="Album" prefWidth="200">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="trackAlbum"/>
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
+        <VBox>
+            <TextField text="Search" fx:id="searchBox"></TextField>
+            <TableView fx:id="trackTable" prefHeight="1000">
+                <columns>
+                    <TableColumn fx:id="trackIdColumn" text="ID" prefWidth="30">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="trackId"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="trackNameColumn" text="Title" prefWidth="200">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="trackName"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="trackArtistColumn" text="Artist" prefWidth="200">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="trackArtist"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="trackAlbumColumn" text="Album" prefWidth="200">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="trackAlbum"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
     </HBox>
     <HBox fx:id="mediaControlsHbox" alignment="CENTER_RIGHT" prefWidth="1920" prefHeight="100">
         <Button fx:id="playButton" text="Play" onAction="#onPlayButtonClick"/>
