@@ -10,23 +10,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.kierancaruana.adamusicplayer.LaunchApplication.primaryStage;
 
 
 public class HomeScreen extends StackPane {
@@ -46,18 +47,25 @@ public class HomeScreen extends StackPane {
     private ProgressBar songProgress;
     @FXML
     private Button playButton;
+    @FXML
+    VBox playlistButtonList;
 
     MusicControls musicControls = new MusicControls();
     Csv csv = new Csv();
 
-    ObservableList<Song> songList = FXCollections.observableArrayList();
+    ObservableList<Song> masterSongList = FXCollections.observableArrayList();
+    ObservableList<Song> currentSongList = FXCollections.observableArrayList();
+    ObservableList<String> playlists = FXCollections.observableArrayList();
 
     Logger logger = Logger.getLogger(StageManager.class.getName());
 
     Song nowPlaying;
+    String currentPlaylist;
 
     @FXML
     public void initialize() {
+        playlists.add("All Songs");
+        playlists.add("My Favourites");
         int winWidth = 1920;
         int winHeight = 1080;
         musicVbox.setStyle("-fx-background-color: #28353b;");
@@ -82,34 +90,49 @@ public class HomeScreen extends StackPane {
         loadedSongs = csv.readSongsFromFile();
         loadedSongs.forEach((n) -> {
             logger.log(Level.INFO,"---------Added: " + n.getTrackName() + " -------------");
-            songList.add(n);
+            masterSongList.add(n);
         });
-        trackTable.setItems(songList);
-
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem playSongOption = new MenuItem("Play");
-        MenuItem addSongToPlaylist = new MenuItem("Add to Playlist");
-        contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
-
-        playSongOption.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                musicControls.playMp3(nowPlaying.getTrackFileLocation());
-                playButton.setText("Pause");
-            }
-        });
+        currentSongList.clear();
+        currentSongList.addAll(loadTrackTable(masterSongList));
+        trackTable.setItems(currentSongList);
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(mouseEvent -> {
                 nowPlaying = trackTable.getSelectionModel().getSelectedItem();
                 if ((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)){
-                    logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
                     playButton.setText("Pause");
                 }
                 if (mouseEvent.getButton() == MouseButton.SECONDARY){
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem playSongOption = new MenuItem("Play");
+                    Menu addSongToPlaylist = new Menu("Add to Playlist");
+                    playlists.forEach(name -> {
+                        MenuItem playlistOption = new MenuItem(name);
+                        playlistOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                if (!(nowPlaying.isSongInPlaylist(name))){
+                                    nowPlaying.addSongToPlaylist(name);
+                                    System.out.println(nowPlaying.getIncInPlaylist());
+                                }else{
+                                    logger.log(Level.INFO, "Song already in playlist - " + name);
+                                }
+                            }
+                        });
+                        addSongToPlaylist.getItems().add(playlistOption);
+                    });
+                    contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
+
+                    playSongOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            musicControls.playMp3(nowPlaying.getTrackFileLocation());
+                            playButton.setText("Pause");
+                        }
+                    });
                     tableRow.setContextMenu(contextMenu);
                 }
             });
@@ -118,17 +141,59 @@ public class HomeScreen extends StackPane {
 
         Idle thread = new Idle();
         thread.start();
+
+        loadPlaylistList();
     }
 
+    public void loadPlaylistList(){
+        playlistButtonList.getChildren().clear();
+        if (playlists != null){
+            playlists.forEach(list -> {
+                Button b1 = new Button(list);
+                b1.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if (list.equals("All Songs")){
+                            currentPlaylist = null;
+                        }else{
+                            currentPlaylist = list;
+                        }
+                        System.out.println("Current playlist set to: " + currentPlaylist);
+                        nowPlaying = null;
+                        currentSongList.clear();
+                        currentSongList.addAll(loadTrackTable(masterSongList));
+                    }
+                });
+                playlistButtonList.getChildren().add(b1);
+            });
+        }
+    }
 
+    public List<Song> loadTrackTable(ObservableList<Song> masterSongList){
+        if (currentPlaylist == null){
+            System.out.println("Current plist null");
+            List<Song> returnTrackList = new ArrayList<>();
+            returnTrackList = masterSongList;
+            return returnTrackList;
+        }else{
+            List<Song> returnTrackList = new ArrayList<>();
+            masterSongList.forEach(song -> {
+                System.out.println("Loop");
+                if (song.isSongInPlaylist(currentPlaylist)){
+                    System.out.println("Added " + " to returnTrackList");
+                    returnTrackList.add(song);
+                }
+            });
+            return returnTrackList;
+        }
+    }
 
     public void onPlayButtonClick() {
-        System.out.println("Button clicked: " + playButton.getText());
         if ((playButton.getText()).equals("Play")){
-            System.out.println("Entered first if");
+            System.out.println("Now Playing: " + nowPlaying);
             if (nowPlaying == null){
-                musicControls.playMp3(songList.get(0).getTrackFileLocation());
-                nowPlaying = songList.get(0);
+                musicControls.playMp3(currentSongList.get(0).getTrackFileLocation());
+                nowPlaying = currentSongList.get(0);
             }else{
                 musicControls.unpauseMp3();
             }
@@ -141,36 +206,69 @@ public class HomeScreen extends StackPane {
 
     public void onShuffleButtonClick() {
         new Thread(() -> {
-            int numOfSongs = songList.size();
+            int numOfSongs = currentSongList.size();
+            List<Integer> songIds = new ArrayList<Integer>();
+            currentSongList.forEach(song -> {
+                songIds.add((int) song.getTrackId());
+            });
+            System.out.println("Song ID's: " + songIds);
             int counter = 0;
             List<Integer> songOrder = new ArrayList<Integer>();
             while (counter < numOfSongs){
-                int songNum = (int) Math.round(Math.random()*(numOfSongs));
+                int songNum = (int) Math.floor(Math.random()*(numOfSongs));
                 if (!(songOrder.contains(songNum))){
-                    System.out.println("Song added: " + songNum);
                     songOrder.add(songNum);
                     counter++;
                 }
             }
-            System.out.println("Song Order Length: " + songOrder.size());
-            System.out.println("Song Order:");
-
             counter = 0;
+            songOrder.forEach(songOrderNum -> {
+                System.out.println("Order: " + songOrderNum);
+            });
             while (counter < songOrder.size()){
-                System.out.println("In player loop counter: " + counter);
-                musicControls.playMp3((getSongObject(songOrder.get(counter))).getTrackFileLocation());
+//                System.out.println("Shuffle Playing: " + getSongObject(songIds.get(songOrder.get(counter))).getTrackFileLocation());
+                String musicFile = (getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation();
+                musicControls.playMp3(musicFile);
+                double trackLength = musicControls.getTrackLength(musicFile);
+                while (Double.isNaN(trackLength)){
+                    trackLength = musicControls.getTrackLength(musicFile);
+                    System.out.println("Waiting for trackLength");
+                }
                 try {
 //                    Thread.sleep(10000);
-                    Thread.sleep((long) musicControls.getTrackLength());
+
+                    System.out.println("Track Length: " + trackLength);
+                    Thread.sleep((long) trackLength);
+                    counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                counter++;
             }
         }).start();
     }
 
     public Song getSongObject(int songId){
-        return songList.get(songId);
+        return masterSongList.get(songId);
+    }
+
+    public void onNewPlaylistButtonClick() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        Button getNameBtn = new Button("Create");
+        Text titlePopupText = new Text();
+        titlePopupText.setText("Create New Playlist");
+        TextField nameField = new TextField();
+        getNameBtn.setOnAction(actionEvent -> {
+            playlists.add(nameField.getText());
+            logger.log(Level.INFO, "Playlist created: " + playlists.get((playlists.size())-1));
+            dialog.hide();
+            loadPlaylistList();
+        });
+        nameField.setText("Playlist Name");
+        VBox dialogVbox = new VBox(titlePopupText, nameField, getNameBtn);
+        Scene dialogScene = new Scene(dialogVbox, 200, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 }
