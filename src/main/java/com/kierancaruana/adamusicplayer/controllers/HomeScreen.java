@@ -227,14 +227,22 @@ public class HomeScreen extends StackPane {
             });
             while (counter < songOrder.size()){
 //                System.out.println("Shuffle Playing: " + getSongObject(songIds.get(songOrder.get(counter))).getTrackFileLocation());
-                musicControls.playMp3((getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation());
+                String musicFile = (getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation();
+                musicControls.playMp3(musicFile);
+                double trackLength = musicControls.getTrackLength(musicFile);
+                while (Double.isNaN(trackLength)){
+                    trackLength = musicControls.getTrackLength(musicFile);
+                    System.out.println("Waiting for trackLength");
+                }
                 try {
 //                    Thread.sleep(10000);
-                    Thread.sleep((long) musicControls.getTrackLength());
+
+                    System.out.println("Track Length: " + trackLength);
+                    Thread.sleep((long) trackLength);
+                    counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                counter++;
             }
         }).start();
     }
