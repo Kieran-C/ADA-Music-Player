@@ -24,12 +24,9 @@ public class Csv {
             while (scanner.hasNext()){
                 String data = scanner.next();
                 if (counter < 4){
-                    logger.log(Level.INFO,"Counter: " + counter);
                     songTemp.add(data.trim());
-                    logger.log(Level.INFO, "Added " + data + " to temp list");
                     counter++;
                     if (songTemp.size() == 4){
-                        logger.log(Level.INFO,"Counter = " + counter);
                         Song newSong = new Song();
                         newSong.setTrackId(loops+1);
                         newSong.setTrackName(songTemp.get(0));
@@ -37,7 +34,6 @@ public class Csv {
                         newSong.setTrackArtist(songTemp.get(2));
                         newSong.setTrackAlbum(songTemp.get(3));
                         loadedSongList.add(newSong);
-                        logger.log(Level.INFO,"New song track ID: " + newSong.getTrackId());
                         counter = 0;
                         loops++;
                         songTemp.clear();

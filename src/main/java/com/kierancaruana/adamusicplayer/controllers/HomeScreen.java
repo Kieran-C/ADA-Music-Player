@@ -6,17 +6,24 @@ import com.kierancaruana.adamusicplayer.helpers.music.MusicControls;
 import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +44,8 @@ public class HomeScreen extends StackPane {
     private Label playlistsTitleBar;
     @FXML
     private ProgressBar songProgress;
+    @FXML
+    private Button playButton;
 
     MusicControls musicControls = new MusicControls();
     Csv csv = new Csv();
@@ -44,6 +53,8 @@ public class HomeScreen extends StackPane {
     ObservableList<Song> songList = FXCollections.observableArrayList();
 
     Logger logger = Logger.getLogger(StageManager.class.getName());
+
+    Song nowPlaying;
 
     @FXML
     public void initialize() {
@@ -75,13 +86,31 @@ public class HomeScreen extends StackPane {
         });
         trackTable.setItems(songList);
 
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem playSongOption = new MenuItem("Play");
+        MenuItem addSongToPlaylist = new MenuItem("Add to Playlist");
+        contextMenu.getItems().addAll(playSongOption, addSongToPlaylist);
+
+        playSongOption.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                musicControls.playMp3(nowPlaying.getTrackFileLocation());
+                playButton.setText("Pause");
+            }
+        });
+
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(mouseEvent -> {
-                if (mouseEvent.getButton() == MouseButton.PRIMARY){
+                nowPlaying = trackTable.getSelectionModel().getSelectedItem();
+                if ((mouseEvent.getButton() == MouseButton.PRIMARY) && (mouseEvent.getClickCount() == 2)){
                     logger.log(Level.INFO, "Primary mouse button clicked");
                     String fileLocation = trackTable.getSelectionModel().getSelectedItem().getTrackFileLocation();
                     musicControls.playMp3(fileLocation);
+                    playButton.setText("Pause");
+                }
+                if (mouseEvent.getButton() == MouseButton.SECONDARY){
+                    tableRow.setContextMenu(contextMenu);
                 }
             });
             return tableRow;
@@ -91,11 +120,57 @@ public class HomeScreen extends StackPane {
         thread.start();
     }
 
+
+
     public void onPlayButtonClick() {
-        musicControls.playMp3("/music/Noisestorm-CrabRave.mp3");
+        System.out.println("Button clicked: " + playButton.getText());
+        if ((playButton.getText()).equals("Play")){
+            System.out.println("Entered first if");
+            if (nowPlaying == null){
+                musicControls.playMp3(songList.get(0).getTrackFileLocation());
+                nowPlaying = songList.get(0);
+            }else{
+                musicControls.unpauseMp3();
+            }
+            playButton.setText("Pause");
+        }else{
+            musicControls.pauseMp3();
+            playButton.setText("Play");
+        }
     }
 
     public void onShuffleButtonClick() {
-//        csv.readSongsFromFile();
+        new Thread(() -> {
+            int numOfSongs = songList.size();
+            int counter = 0;
+            List<Integer> songOrder = new ArrayList<Integer>();
+            while (counter < numOfSongs){
+                int songNum = (int) Math.round(Math.random()*(numOfSongs));
+                if (!(songOrder.contains(songNum))){
+                    System.out.println("Song added: " + songNum);
+                    songOrder.add(songNum);
+                    counter++;
+                }
+            }
+            System.out.println("Song Order Length: " + songOrder.size());
+            System.out.println("Song Order:");
+
+            counter = 0;
+            while (counter < songOrder.size()){
+                System.out.println("In player loop counter: " + counter);
+                musicControls.playMp3((getSongObject(songOrder.get(counter))).getTrackFileLocation());
+                try {
+//                    Thread.sleep(10000);
+                    Thread.sleep((long) musicControls.getTrackLength());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                counter++;
+            }
+        }).start();
+    }
+
+    public Song getSongObject(int songId){
+        return songList.get(songId);
     }
 }
