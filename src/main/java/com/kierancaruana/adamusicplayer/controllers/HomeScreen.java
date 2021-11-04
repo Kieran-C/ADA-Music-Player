@@ -53,7 +53,8 @@ public class HomeScreen extends StackPane {
     MusicControls musicControls = new MusicControls();
     Csv csv = new Csv();
 
-    ObservableList<Song> songList = FXCollections.observableArrayList();
+    ObservableList<Song> masterSongList = FXCollections.observableArrayList();
+    ObservableList<Song> currentSongList = FXCollections.observableArrayList();
     ObservableList<String> playlists = FXCollections.observableArrayList();
 
     Logger logger = Logger.getLogger(StageManager.class.getName());
@@ -63,6 +64,7 @@ public class HomeScreen extends StackPane {
 
     @FXML
     public void initialize() {
+        playlists.add("All Songs");
         playlists.add("My Favourites");
         int winWidth = 1920;
         int winHeight = 1080;
@@ -88,9 +90,11 @@ public class HomeScreen extends StackPane {
         loadedSongs = csv.readSongsFromFile();
         loadedSongs.forEach((n) -> {
             logger.log(Level.INFO,"---------Added: " + n.getTrackName() + " -------------");
-            songList.add(n);
+            masterSongList.add(n);
         });
-        trackTable.setItems(songList);
+        currentSongList.clear();
+        currentSongList.addAll(loadTrackTable(masterSongList));
+        trackTable.setItems(currentSongList);
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
@@ -149,8 +153,15 @@ public class HomeScreen extends StackPane {
                 b1.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        currentPlaylist = list;
+                        if (list.equals("All Songs")){
+                            currentPlaylist = null;
+                        }else{
+                            currentPlaylist = list;
+                        }
                         System.out.println("Current playlist set to: " + currentPlaylist);
+                        nowPlaying = null;
+                        currentSongList.clear();
+                        currentSongList.addAll(loadTrackTable(masterSongList));
                     }
                 });
                 playlistButtonList.getChildren().add(b1);
@@ -158,11 +169,31 @@ public class HomeScreen extends StackPane {
         }
     }
 
+    public List<Song> loadTrackTable(ObservableList<Song> masterSongList){
+        if (currentPlaylist == null){
+            System.out.println("Current plist null");
+            List<Song> returnTrackList = new ArrayList<>();
+            returnTrackList = masterSongList;
+            return returnTrackList;
+        }else{
+            List<Song> returnTrackList = new ArrayList<>();
+            masterSongList.forEach(song -> {
+                System.out.println("Loop");
+                if (song.isSongInPlaylist(currentPlaylist)){
+                    System.out.println("Added " + " to returnTrackList");
+                    returnTrackList.add(song);
+                }
+            });
+            return returnTrackList;
+        }
+    }
+
     public void onPlayButtonClick() {
         if ((playButton.getText()).equals("Play")){
+            System.out.println("Now Playing: " + nowPlaying);
             if (nowPlaying == null){
-                musicControls.playMp3(songList.get(0).getTrackFileLocation());
-                nowPlaying = songList.get(0);
+                musicControls.playMp3(currentSongList.get(0).getTrackFileLocation());
+                nowPlaying = currentSongList.get(0);
             }else{
                 musicControls.unpauseMp3();
             }
@@ -175,7 +206,7 @@ public class HomeScreen extends StackPane {
 
     public void onShuffleButtonClick() {
         new Thread(() -> {
-            int numOfSongs = songList.size();
+            int numOfSongs = currentSongList.size();
             int counter = 0;
             List<Integer> songOrder = new ArrayList<Integer>();
             while (counter < numOfSongs){
@@ -200,7 +231,7 @@ public class HomeScreen extends StackPane {
     }
 
     public Song getSongObject(int songId){
-        return songList.get(songId);
+        return masterSongList.get(songId);
     }
 
     public void onNewPlaylistButtonClick() {
