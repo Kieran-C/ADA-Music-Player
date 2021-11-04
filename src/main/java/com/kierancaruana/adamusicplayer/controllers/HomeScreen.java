@@ -232,6 +232,7 @@ public class HomeScreen extends StackPane {
     }
 
     public void onShuffleButtonClick() {
+        playButton.setText("Pause");
         new Thread(() -> {
             int numOfSongs = currentSongList.size();
             List<Integer> songIds = new ArrayList<Integer>();
@@ -256,6 +257,7 @@ public class HomeScreen extends StackPane {
 //                System.out.println("Shuffle Playing: " + getSongObject(songIds.get(songOrder.get(counter))).getTrackFileLocation());
                 String musicFile = (getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation();
                 musicControls.playMp3(musicFile);
+                nowPlaying = (getSongObject(songIds.get(songOrder.get(counter))-1));
                 double trackLength = musicControls.getTrackLength(musicFile);
                 while (Double.isNaN(trackLength)){
                     trackLength = musicControls.getTrackLength(musicFile);
