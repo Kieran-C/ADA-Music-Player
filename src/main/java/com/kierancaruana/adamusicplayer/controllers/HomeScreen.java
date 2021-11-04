@@ -207,18 +207,27 @@ public class HomeScreen extends StackPane {
     public void onShuffleButtonClick() {
         new Thread(() -> {
             int numOfSongs = currentSongList.size();
+            List<Integer> songIds = new ArrayList<Integer>();
+            currentSongList.forEach(song -> {
+                songIds.add((int) song.getTrackId());
+            });
+            System.out.println("Song ID's: " + songIds);
             int counter = 0;
             List<Integer> songOrder = new ArrayList<Integer>();
             while (counter < numOfSongs){
-                int songNum = (int) Math.round(Math.random()*(numOfSongs));
+                int songNum = (int) Math.floor(Math.random()*(numOfSongs));
                 if (!(songOrder.contains(songNum))){
                     songOrder.add(songNum);
                     counter++;
                 }
             }
             counter = 0;
+            songOrder.forEach(songOrderNum -> {
+                System.out.println("Order: " + songOrderNum);
+            });
             while (counter < songOrder.size()){
-                musicControls.playMp3((getSongObject(songOrder.get(counter))).getTrackFileLocation());
+//                System.out.println("Shuffle Playing: " + getSongObject(songIds.get(songOrder.get(counter))).getTrackFileLocation());
+                musicControls.playMp3((getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation());
                 try {
 //                    Thread.sleep(10000);
                     Thread.sleep((long) musicControls.getTrackLength());
