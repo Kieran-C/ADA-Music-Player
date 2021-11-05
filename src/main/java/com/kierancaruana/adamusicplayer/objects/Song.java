@@ -12,6 +12,7 @@ public class Song {
         private final SimpleStringProperty trackAlbum = new SimpleStringProperty();
         private List<String> incInPlaylist = new ArrayList<String>();
         private String trackFileLocation;
+        private long trackLength;
 
         public final double getTrackId(){return this.trackId.get();}
         public final void setTrackId(int id){trackId.set(id);}
@@ -52,6 +53,14 @@ public class Song {
                 }else{
                         return false;
                 }
+        }
+
+        public long getTrackLength() {
+                return trackLength;
+        }
+
+        public void setTrackLength(long trackLength) {
+                this.trackLength = trackLength;
         }
 
         public String getTrackFileLocation() {return trackFileLocation;}

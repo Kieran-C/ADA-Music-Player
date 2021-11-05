@@ -18,6 +18,11 @@ public class CsvTest {
     @Test
     void testReadSongsSuccessful() {
         List<Song> songList = csv.readSongsFromFile();
-        Assertions.assertEquals(2, songList.size());
+        Assertions.assertEquals(4, songList.size());
+    }
+    @Test
+    void testGetFirstSongName() {
+        List<Song> songList = csv.readSongsFromFile();
+        Assertions.assertEquals("Everything You Need", songList.get(0).getTrackName());
     }
 }

@@ -110,7 +110,6 @@ public class HomeScreen extends StackPane {
         searchBox.textProperty().addListener((observa,old,neo)->
                 filteredData.setPredicate(x -> x.getTrackName().toLowerCase().contains(neo.toLowerCase()))
         );
-//        trackTable.setItems(currentSongList);
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
@@ -132,7 +131,6 @@ public class HomeScreen extends StackPane {
                             public void handle(ActionEvent actionEvent) {
                                 if (!(nowPlaying.isSongInPlaylist(name))){
                                     nowPlaying.addSongToPlaylist(name);
-                                    System.out.println(nowPlaying.getIncInPlaylist());
                                 }else{
                                     logger.log(Level.INFO, "Song already in playlist - " + name);
                                 }
@@ -161,7 +159,6 @@ public class HomeScreen extends StackPane {
         loadPlaylistList();
     }
 
-
     /**
      *  load
      */
@@ -178,7 +175,6 @@ public class HomeScreen extends StackPane {
                         }else{
                             currentPlaylist = list;
                         }
-                        System.out.println("Current playlist set to: " + currentPlaylist);
                         nowPlaying = null;
                         currentSongList.clear();
                         currentSongList.addAll(loadTrackTable(masterSongList));
@@ -196,16 +192,13 @@ public class HomeScreen extends StackPane {
      */
     public List<Song> loadTrackTable(ObservableList<Song> masterSongList){
         if (currentPlaylist == null){
-            System.out.println("Current plist null");
             List<Song> returnTrackList = new ArrayList<>();
             returnTrackList = masterSongList;
             return returnTrackList;
         }else{
             List<Song> returnTrackList = new ArrayList<>();
             masterSongList.forEach(song -> {
-                System.out.println("Loop");
                 if (song.isSongInPlaylist(currentPlaylist)){
-                    System.out.println("Added " + " to returnTrackList");
                     returnTrackList.add(song);
                 }
             });
@@ -218,7 +211,7 @@ public class HomeScreen extends StackPane {
      */
     public void onPlayButtonClick() {
         if ((playButton.getText()).equals("Play")){
-            System.out.println("Now Playing: " + nowPlaying);
+            logger.log(Level.INFO,"Now Playing: " + nowPlaying.getTrackName());
             if (nowPlaying == null){
                 musicControls.playMp3(currentSongList.get(0).getTrackFileLocation());
                 nowPlaying = currentSongList.get(0);
@@ -243,7 +236,7 @@ public class HomeScreen extends StackPane {
             currentSongList.forEach(song -> {
                 songIds.add((int) song.getTrackId());
             });
-            System.out.println("Song ID's: " + songIds);
+
             int counter = 0;
             List<Integer> songOrder = new ArrayList<Integer>();
             while (counter < numOfSongs){
@@ -254,24 +247,23 @@ public class HomeScreen extends StackPane {
                 }
             }
             counter = 0;
-            songOrder.forEach(songOrderNum -> {
-                System.out.println("Order: " + songOrderNum);
-            });
-            while (counter < songOrder.size()){
-//                System.out.println("Shuffle Playing: " + getSongObject(songIds.get(songOrder.get(counter))).getTrackFileLocation());
-                String musicFile = (getSongObject(songIds.get(songOrder.get(counter))-1)).getTrackFileLocation();
-                musicControls.playMp3(musicFile);
-                nowPlaying = (getSongObject(songIds.get(songOrder.get(counter))-1));
-                double trackLength = musicControls.getTrackLength(musicFile);
-                while (Double.isNaN(trackLength)){
-                    trackLength = musicControls.getTrackLength(musicFile);
-                    System.out.println("Waiting for trackLength");
-                }
-                try {
-//                    Thread.sleep(10000);
 
-                    System.out.println("Track Length: " + trackLength);
-                    Thread.sleep((long) trackLength);
+            while (counter < songOrder.size()){
+                Song songObject = getSongObject(songIds.get(songOrder.get(counter)) - 1);
+                String musicFile = songObject.getTrackFileLocation();
+                musicControls.playMp3(musicFile);
+                nowPlaying = songObject;
+                if (counter+1 < songOrder.size()){
+                    logger.log(Level.INFO,"Up next: " + getSongObject(songIds.get(songOrder.get(counter+1))-1).getTrackName());
+                }
+//                double trackLength = songObject.getTrackLength();
+//                logger.log(Level.INFO,"Track Length Before Loop: " + trackLength);
+//                while (Double.isNaN(trackLength)){
+//                    trackLength = musicControls.getTrackLength(musicFile);
+//                }
+                logger.log(Level.INFO,"Track Length: " + songObject.getTrackLength());
+                try {
+                    Thread.sleep(songObject.getTrackLength());
                     counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
