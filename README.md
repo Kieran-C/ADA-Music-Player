@@ -5,7 +5,9 @@ Created by Kieran Caruana
 A simple music player created in Java utilising JavaFX
 
 ### Install Instructions
-Coming soon
+Download zip from https://github.com/Kieran-C/ADA-Music-Player/releases
+
+Extract then navigate to adamusicplayer\bin and run launcher.bat
 
 ------------
 
