@@ -12,6 +12,7 @@ import javafx.stage.WindowEvent;
 import java.awt.*;
 
 import java.io.IOException;
+import java.util.Set;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 
@@ -19,6 +20,11 @@ public class LaunchApplication extends Application {
 
     public static Stage primaryStage;
 
+    /**
+     * This method is called when the application starts. It creates the main window of the application.
+     * @param stage The stage of the application.
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         Dimension screenSize = getDefaultToolkit().getScreenSize();

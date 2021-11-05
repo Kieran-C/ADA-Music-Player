@@ -12,6 +12,7 @@ public class Song {
         private final SimpleStringProperty trackAlbum = new SimpleStringProperty();
         private List<String> incInPlaylist = new ArrayList<String>();
         private String trackFileLocation;
+        private long trackLength;
 
         public final double getTrackId(){return this.trackId.get();}
         public final void setTrackId(int id){trackId.set(id);}
@@ -41,12 +42,25 @@ public class Song {
                 this.incInPlaylist.add(playlistName);
         }
 
+        /**
+         * checks if the song is in the playlist
+         * @param playlistName playlist name
+         * @return true if the song is in the playlist, false otherwise
+         */
         public boolean isSongInPlaylist(String playlistName){
                 if (this.incInPlaylist.contains(playlistName)){
                         return true;
                 }else{
                         return false;
                 }
+        }
+
+        public long getTrackLength() {
+                return trackLength;
+        }
+
+        public void setTrackLength(long trackLength) {
+                this.trackLength = trackLength;
         }
 
         public String getTrackFileLocation() {return trackFileLocation;}

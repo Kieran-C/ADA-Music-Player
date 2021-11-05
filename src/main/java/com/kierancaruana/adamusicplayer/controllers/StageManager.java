@@ -1,10 +1,8 @@
 package com.kierancaruana.adamusicplayer.controllers;
 
 import com.kierancaruana.adamusicplayer.LaunchApplication;
-import com.kierancaruana.adamusicplayer.exceptions.SceneNotFoundException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -14,6 +12,13 @@ public class StageManager extends LaunchApplication {
     String currentScene = null;
     Logger logger = Logger.getLogger(StageManager.class.getName());
 
+    /**
+     * Loads the scene with the given name.
+     * @param FXMLFile  Name The name of the FXML file to load.
+     * @param stageName Name The name of the stage to load the scene into.
+     * @param styleSheetPath Path The path to the style sheet to load.
+     * @return returns true if loaded successfully , false otherwise.
+     */
     public boolean swapScene(String FXMLFile, String stageName, String styleSheetPath){
         if (primaryStage != null) {
             try {
