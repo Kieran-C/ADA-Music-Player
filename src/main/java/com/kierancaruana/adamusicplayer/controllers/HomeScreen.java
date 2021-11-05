@@ -160,7 +160,7 @@ public class HomeScreen extends StackPane {
     }
 
     /**
-     *  load
+     *  creates the button for each playlist, and sets the action for the button to load the songs for that playlist into current song list
      */
     public void loadPlaylistList(){
         playlistButtonList.getChildren().clear();
@@ -256,11 +256,6 @@ public class HomeScreen extends StackPane {
                 if (counter+1 < songOrder.size()){
                     logger.log(Level.INFO,"Up next: " + getSongObject(songIds.get(songOrder.get(counter+1))-1).getTrackName());
                 }
-//                double trackLength = songObject.getTrackLength();
-//                logger.log(Level.INFO,"Track Length Before Loop: " + trackLength);
-//                while (Double.isNaN(trackLength)){
-//                    trackLength = musicControls.getTrackLength(musicFile);
-//                }
                 logger.log(Level.INFO,"Track Length: " + songObject.getTrackLength());
                 try {
                     Thread.sleep(songObject.getTrackLength());
