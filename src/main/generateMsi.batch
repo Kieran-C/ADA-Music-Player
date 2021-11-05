@@ -1,1 +1,0 @@
-jpackage -t exe --name Flow --description "Music Player - Kieran Caruana" --app-version 1.0 --input out/artifacts/ADA_Music_Player_jar --dest V:\Projects\Builds\Flow --icon V:\Projects\Icons\flow.ico --main-jar ADA-Music-Player.jar --module-path C:\Users\kiera\.jdks\openjdk-17.0.1\jmods --add-modules javafx.controls,javafx.media,javafx.fxml --win-shortcut --win-menu

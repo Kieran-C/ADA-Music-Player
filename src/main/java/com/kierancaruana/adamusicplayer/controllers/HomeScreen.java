@@ -7,6 +7,7 @@ import com.kierancaruana.adamusicplayer.objects.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -98,9 +99,18 @@ public class HomeScreen extends StackPane {
             logger.log(Level.INFO,"---------Added: " + n.getTrackName() + " -------------");
             masterSongList.add(n);
         });
+
         currentSongList.clear();
         currentSongList.addAll(loadTrackTable(masterSongList));
-        trackTable.setItems(filterSongList());
+        FilteredList<Song> filteredData = new FilteredList(currentSongList);
+        SortedList<Song>   sortableData = new SortedList<>(filteredData);
+        trackTable.setItems(sortableData);
+        sortableData.comparatorProperty().bind(trackTable.comparatorProperty());
+
+        searchBox.textProperty().addListener((observa,old,neo)->
+                filteredData.setPredicate(x -> x.getTrackName().toLowerCase().contains(neo.toLowerCase()))
+        );
+//        trackTable.setItems(currentSongList);
 
         trackTable.setRowFactory(param -> {
             final TableRow<Song> tableRow = new TableRow<>();
@@ -151,28 +161,6 @@ public class HomeScreen extends StackPane {
         loadPlaylistList();
     }
 
-    /**
-     * Filters the currentSongList based on text in search text field
-     *
-     * @return filtered list of songs
-     */
-    private FilteredList<Song> filterSongList() {
-        final FilteredList<Song> songsFiltered = new FilteredList<>(currentSongList, p -> true);
-        searchBox.textProperty().addListener((observable, oldValue, newValue) -> songsFiltered.setPredicate(song -> {
-            System.out.println("New Value: " + newValue);
-            trackTable.getSelectionModel().clearSelection();
-            if (newValue.isBlank()) {
-                return true;
-            }
-            final String lowerCaseFilter = newValue.toLowerCase().trim();
-            boolean contains = song.getTrackName().toLowerCase().contains(lowerCaseFilter);
-            if (contains){
-                System.out.println("Match Found: " + song.getTrackName());
-            }
-            return contains;
-        }));
-        return songsFiltered;
-    }
 
     /**
      *  load
